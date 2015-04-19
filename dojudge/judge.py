@@ -13,7 +13,7 @@ class Judge(object):
         self.config = config
 
     def set_time_limit(self, seconds):
-        pass
+        self.time_limit = seconds
 
     def set_memory_limit(self, memory):
         pass
@@ -33,6 +33,14 @@ class Judge(object):
             }
 
         run_status, stdout, stderr = self.execute()
+
+        if run_status == 124:
+            return {
+                'error': 'Timeout Error',
+                'stdout': stdout,
+                'stderr': stderr
+            }
+
         if run_status != 0:
             return {
                 'error': 'Runtime Error',
@@ -64,6 +72,9 @@ class Judge(object):
         }
 
     def _run_process(self, command):
+        if self.time_limit:
+            command = 'timeout {0} {1}'.format(self.time_limit, command)
+
         p = subprocess.Popen(command,
                              stdout=subprocess.PIPE,
                              shell=True)
