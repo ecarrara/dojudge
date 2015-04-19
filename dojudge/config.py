@@ -8,12 +8,14 @@ class Config(object):
     JUDGE = {
         'c++': {
             'filename': '/tmp/{problem}-{user}.cpp',
-            'build': 'g++ -O2 --std=c++11 {filename} -o /tmp/runme',
+            'build': 'g++ -O2 -fno-asm -fomit-frame-pointer -lm --static'
+                     ' --std=c++11 {filename} -o /tmp/runme',
             'run': '/tmp/runme'
         },
         'c': {
             'filename': '/tmp/{problem}-{user}.c',
-            'build': 'gcc -02 {filename} -o /tmp/runme',
+            'build': 'gcc -O2 -fno-asm -fomit-frame-pointer -lm --static'
+                     ' --std=c99 {filename} -o /tmp/runme',
             'run': '/tmp/runme'
         },
         'python': {
